@@ -71,9 +71,19 @@ public class JdbcBasePluginTest {
     private RequestContext context;
     private Properties poolProps;
 
+    private Properties getDefaultConnectionProperties() {
+        Properties properties = new Properties();
+        properties.setProperty("user", "test-user");
+        properties.setProperty("password", "test-password");
+        return properties;
+    }
+
     @BeforeEach
     public void before() {
         configuration = new Configuration();
+        configuration.set("jdbc.user", "test-user");
+        configuration.set("jdbc.password", "test-password");
+
         context = new RequestContext();
         context.setConfig("default");
         context.setDataSource("test-table");
@@ -346,14 +356,14 @@ public class JdbcBasePluginTest {
 
         assertSame(mockConnection, conn);
 
-        verify(mockConnectionManager).getConnection("test-server", "test-url", new Properties(), false, null, null);
+        verify(mockConnectionManager).getConnection("test-server", "test-url", getDefaultConnectionProperties(), false, null, null);
     }
 
     @Test
     public void testGetConnectionConnPropsPoolDisabled() throws SQLException {
         context.setServerName("test-server");
 
-        Properties connProps = new Properties();
+        Properties connProps = getDefaultConnectionProperties();
         connProps.setProperty("foo", "foo-val");
         connProps.setProperty("bar", "bar-val");
 
@@ -392,7 +402,7 @@ public class JdbcBasePluginTest {
 
         assertSame(mockConnection, conn);
 
-        Properties connProps = new Properties();
+        Properties connProps = getDefaultConnectionProperties();
         connProps.setProperty("foo", "foo-val");
         connProps.setProperty("bar", "bar-val");
 
@@ -419,7 +429,7 @@ public class JdbcBasePluginTest {
 
         assertSame(mockConnection, conn);
 
-        Properties connProps = new Properties();
+        Properties connProps = getDefaultConnectionProperties();
         connProps.setProperty("foo", "foo-val");
         connProps.setProperty("bar", "bar-val");
 
@@ -447,7 +457,7 @@ public class JdbcBasePluginTest {
 
         assertSame(mockConnection, conn);
 
-        Properties connProps = new Properties();
+        Properties connProps = getDefaultConnectionProperties();
         connProps.setProperty("foo", "foo-val");
         connProps.setProperty("bar", "bar-val");
 
@@ -478,7 +488,7 @@ public class JdbcBasePluginTest {
 
         assertSame(mockConnection, conn);
 
-        Properties connProps = new Properties();
+        Properties connProps = getDefaultConnectionProperties();
         connProps.setProperty("foo", "foo-val");
         connProps.setProperty("bar", "bar-val");
 
